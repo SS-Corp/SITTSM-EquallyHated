@@ -8,7 +8,7 @@ a chaotic mod where everyone is equal. (mostly)
 
 ## overview
 recommended to play with friends!
-<br> [every change in mod](/git/everyChanges.md)
+<br> **[every change in mod](/git/everyChanges.md)**
 
 crawl dodge fart fight survive just to make it to the elevator (bro just look at gif)
 

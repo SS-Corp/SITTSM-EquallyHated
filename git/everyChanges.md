@@ -35,6 +35,7 @@
     * movement state things
     * teleport knocks other players
     * yapping makes other players sleep (your partner cant stand you [this goes in irl too])
+    * health packages/food makes you fat/bigger
 * **CAMERA** 
     * shake is rigid 
     * shake is random (i would like it to be relative where shake is BUT it will take too long!)

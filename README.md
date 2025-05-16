@@ -12,11 +12,13 @@ recommended to play with friends!
 
 crawl dodge fart fight survive just to make it to the elevator (bro just look at gif)
 
+also this was made in 1 week
+
 ## how to install
 1. download [bepinex](https://github.com/BepInEx/BepInEx) (x64)
 2. extract/put bepinex in the game folder 
 3. launch game then exit
-4. download [mod]()
+4. download [mod](https://github.com/SS-Corp/SITTSM-EquallyHated/releases)
 5. extract/put mod in ``BepInEx/plugins``
 
 ## gitty

@@ -11,7 +11,7 @@
 ## changes
 * **GAME** LevelManager
     * ._friendlyFireOn = True **<ins>(the start of it all)</ins>**
-* **GAME** PassiveManager (kinda ruins purpose)
+* **GAME** PassiveManager (kinda ruins purpose of a roguelite)
     * fartsCanSplit = True
     * projectilesCanHome = True 
 * **GAME** Experience (so you can focus on the fight)
@@ -46,6 +46,7 @@
 * **OBJECT**
     * farts explode on despawn
     * black hole affects other players
+    * EnemyMovementTriggers Applies for everyone!
     * Traps
         * TrapElectrical Affects Players (Servers, Lights, etc)
         * TrapCamera Affects Enemies

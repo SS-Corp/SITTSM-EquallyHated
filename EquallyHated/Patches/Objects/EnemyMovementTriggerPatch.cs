@@ -53,14 +53,28 @@ namespace S.EquallyHated.Patches {
             FieldInfo rangeField = typeof(EnemyMovementTrigger).GetField("range", BindingFlags.NonPublic | BindingFlags.Instance);
             float rangeInstance = (float)rangeField.GetValue(__instance);
 
+            FieldInfo makeHeadFragileField = typeof(EnemyMovementTrigger).GetField("_makeHeadFragile", BindingFlags.NonPublic | BindingFlags.Instance);
+            bool _makeHeadFragileInstance = (bool)makeHeadFragileField.GetValue(__instance);
+            FieldInfo addForceField = typeof(EnemyMovementTrigger).GetField("_addForce", BindingFlags.NonPublic | BindingFlags.Instance);
+            Vector3 addForceInstance = (Vector3)addForceField.GetValue(__instance);
+            FieldInfo addXTorqueField = typeof(EnemyMovementTrigger).GetField("_addXTorque", BindingFlags.NonPublic | BindingFlags.Instance);
+            float addXTorqueInstance = (float)addXTorqueField.GetValue(__instance);
+
+            FieldInfo reactionStateField = typeof(EnemyMovementTrigger).GetField("_reactionState", BindingFlags.NonPublic | BindingFlags.Instance);
+            CharacterMovementState reactionStateInstance = (CharacterMovementState)reactionStateField.GetValue(__instance);
+
+            MethodInfo TriggerReactionState = typeof(EnemyMovementTrigger).GetMethod("TriggerReactionState", BindingFlags.Instance | BindingFlags.NonPublic);
+
             FieldInfo damageDataField = typeof(EnemyMovementTrigger).GetField("_damageData", BindingFlags.NonPublic | BindingFlags.Instance);
             DamageData damageDataInstance = (DamageData)damageDataField.GetValue(__instance);
+            FieldInfo triggerSoundField = typeof(EnemyMovementTrigger).GetField("_triggerSound", BindingFlags.NonPublic | BindingFlags.Instance);
+            EffectSoundBank triggerSoundInstance = (EffectSoundBank)triggerSoundField.GetValue(__instance);
 
             if (lifeInstance < effectTimeMInstance) return;
 
             foreach (Collider collider in Physics.OverlapSphere(__instance.transform.position + offsetInstance, rangeInstance)) {
                 CharacterMovement movement = collider.GetComponentInParent<CharacterMovement>();
-                if (movement != null && (ownerInstance == null || movement != ownerInstance.Movement) && movement.Health.IsAlive && !movement.Health.CharacterOnFire.IsBurning && (!alreadyHitCharactersInstance.Contains(movement))) {
+                if (movement != null && (ownerInstance == null || movement != ownerInstance.Movement) && movement.Health.IsAlive && !movement.Health.CharacterOnFire.IsBurning && !alreadyHitCharactersInstance.Contains(movement)) {
                     if (damageDataInstance != null) {
                         if (movement.Unit.Hero != null && ownerInstance != null) {
                             movement.Health.TakeDamage(new Damage(ownerInstance, ownerInstance.Movement.GetExtraDamage() + damageDataInstance.GetDamage(movement.Unit.Hero, movement.Health), damageDataInstance.damageType, movement.Torso, __instance.transform.position, (ownerInstance != null) ? damageDataInstance.GetExtraForce(ownerInstance.Movement.FacingDirection, ownerInstance.Movement.FacingDirection, movement.Unit.Hero) : Vector3.zero, null, damageDataInstance.explosionForce, damageDataInstance, false));
@@ -76,8 +90,33 @@ namespace S.EquallyHated.Patches {
                         }
                     }
 
+                    if (reactionStateInstance != null) {
+                        TriggerReactionState.Invoke(__instance, new object[] { movement });
+                    }
+
                     alreadyHitCharactersInstance.Add(movement);
-                    //yeah im not going anything else
+                    triggerSoundInstance.Play(__instance.transform.position);
+                    if (_makeHeadFragileInstance) {
+                        movement.HeadBecomeFragile(true);
+                    }
+                    if (addForceInstance != Vector3.zero) {
+                        if (!movement.IsWalkingOnXZPlane) {
+                            movement.AddVelocityToAllBodies(addForceInstance.WithX(addForceInstance.x * (float)movement.FacingDirection));
+                        }
+                        else {
+                            float num = 1f;
+                            if (__instance.transform.position.z - movement.Position.z < 1f) {
+                                num = -1f;
+                            }
+                            movement.ReleaseTorsoHeightLock();
+                            movement.GetComponentInChildren<LockTorsoHeight>().ReleaseZLock();
+                            movement.AddVelocityToAllBodies(addForceInstance.WithZ(addForceInstance.z * num));
+                            Debug.Log("Add force " + (addForceInstance.z * num).ToString());
+                        }
+                    }
+                    if (addXTorqueInstance != 0f && !movement.IsWalkingOnXZPlane) {
+                        AddTorqueForTime.AddTorque(movement.Torso.gameObject, SnapAxis.Z, addXTorqueInstance, 0.3f, 0f);
+                    }
                 }
             }
         }

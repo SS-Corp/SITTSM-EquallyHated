@@ -12,6 +12,9 @@ namespace S.EquallyHated.Scripts {
         private bool _messageShown;
         private float _messageTimer;
         private int _messageIndex;
+
+        private bool _messageCanShow = true;
+        private float _messageCanShowTime = 1;
         [Space]
         public TMP_Text text;
         private AudioSource audioSource;
@@ -34,11 +37,13 @@ namespace S.EquallyHated.Scripts {
         }
 
         public void ShowMessage() {
+            if (!_messageCanShow) return;
+            _messageCanShow = false;
+
             string message = messages[_messageIndex];
             AudioClip messageAudio = messageAudios[_messageIndex];
 
             text.text = message;
-            audioSource.PlayOneShot(messageAudio);
 
             _messageIndex++;
             if (_messageIndex > messages.Length - 1) {
@@ -50,7 +55,10 @@ namespace S.EquallyHated.Scripts {
 
             gameObject.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
             gameObject.SetActive(true);
+            audioSource.PlayOneShot(messageAudio);
             StartCoroutine(ScaleMessage(new Vector3(1, 1, 1), messageLerpSpeed));
+
+            StartCoroutine(ReturnCanShowMessage());
         }
         public void UnshowingMessage() {
             _messageShown = false;
@@ -75,5 +83,9 @@ namespace S.EquallyHated.Scripts {
             gameObject.SetActive(_messageShown);
         }
 
+        private IEnumerator ReturnCanShowMessage() {
+            yield return new WaitForSeconds(_messageCanShowTime);
+            _messageCanShow = true;
+        }
     }
 }

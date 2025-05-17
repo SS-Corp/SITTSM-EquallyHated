@@ -10,11 +10,23 @@ a chaotic mod where everyone is equal. (mostly)
 recommended to play with friends!
 <br> **[every change in mod](/git/everyChanges.md)**
 
-crawl dodge fart fight survive just to make it to the elevator (bro just look at gif)
+[video to show what about what yes](https://www.youtube.com/watch?v=RIlpBTU7EIU)
+* **EVERYONE FIGHT!!!**
+* **ELEVATOR WEIGHT LIMIT** (co-op)
+    * please only fight when elevator opens (its not fun when you just kill them at the start)
+* **CRAWLING!**
+    * dodge the painful bullets
+    * dodge some attacks
+    * funni
+* **KEEP FIGHTING**
+    * XP continues
+    * drops packages for every xp
+    * only 1 door (packages upgrades and doors are the same)
 
 also this was made in 1 week
 
 ## how to install
+for **Version 0.24G**
 1. download [bepinex](https://github.com/BepInEx/BepInEx) (x64)
 2. extract/put bepinex in the game folder 
 3. launch game then exit
